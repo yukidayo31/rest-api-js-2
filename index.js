@@ -4,6 +4,7 @@ const port = 3000;
 const bodyParser = require("body-parser");
 const db = require("./connection");
 const response = require("./response");
+const expenseRoute = require("./router/totalExpenseRoute");
 
 app.use(bodyParser.json());
 
@@ -34,7 +35,7 @@ app.get("/expenses/:id", (req, res) => {
   });
 });
 
-app.get("/expenses/total/expense-date", (req, res) => {
+/* app.get("/expenses/total/expense-date", (req, res) => {
   const sql = `SELECT expense_date, SUM(nominal) AS total_expense FROM expense GROUP BY expense_date`;
 
   db.query(sql, (err, result) => {
@@ -49,7 +50,7 @@ app.get("/expenses/total/expense-date", (req, res) => {
   // res.send(`Successfully GET total expense by date ${date}`);
 });
 
-app.get("/expenses/total/category", (req, res) => {
+ app.get("/expenses/total/category", (req, res) => {
   const sql = `SELECT category, SUM(nominal) AS total_expense FROM expense GROUP BY category`;
 
   db.query(sql, (err, result) => {
@@ -61,7 +62,11 @@ app.get("/expenses/total/category", (req, res) => {
     response(200, result, `GET total expense data grouped by category`, res);
     console.log(`GET total expense grouped by category, OK!`);
   });
-});
+}); */
+
+// ALTERNATIVE FOR TOTAL EXPENSE BY DATE & CATEGORY
+// USING EXPRESS ROUTER
+app.use("/expenses/total", expenseRoute);
 
 app.post("/expenses", (req, res) => {
   const { name, nominal, category, expenseDate } = req.body;
